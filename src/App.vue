@@ -3,7 +3,7 @@ import AppChat from './AppChat.vue'
 </script>
 
 <template>
-  <main>
+  <main @contextmenu.stop.prevent="() => false">
     <AppChat class="app-chat" />
   </main>
 </template>

@@ -89,7 +89,7 @@ onMounted(() => {
         class="app-chat__button"
         v-for="(option, key) in options"
         :key="key"
-        @click="handleNext(key)"
+        @click="handleNext(key as string)"
         :disabled="isTyping"
       >
         {{ option }}

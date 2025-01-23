@@ -5,38 +5,32 @@
       {
         "id": "turnstile",
         "text": "Турникет",
-        "goto": "turnstile",
-        "always": false
+        "goto": "turnstile"
       },
       {
         "id": "code-lock",
         "text": "Кодовый замок",
-        "goto": "code-lock",
-        "always": false
+        "goto": "code-lock"
       },
       {
         "id": "electromagnetic-lock",
         "text": "Электромагнитный замок",
-        "goto": "electromagnetic-lock",
-        "always": false
+        "goto": "electromagnetic-lock"
       },
       {
         "id": "biometric-photo",
         "text": "Биометрия (по фотографии)",
-        "goto": "biometric-photo",
-        "always": false
+        "goto": "biometric-photo"
       },
       {
         "id": "intercom-fingerprint",
         "text": "Домофон (отпечаток пальца)",
-        "goto": "intercom-fingerprint",
-        "always": false
+        "goto": "intercom-fingerprint"
       },
       {
         "id": "qr-code",
         "text": "QR-код",
-        "goto": "qr-code",
-        "always": false
+        "goto": "qr-code"
       }
     ]
   },
@@ -46,50 +40,42 @@
       {
         "id": "turnstile-history",
         "text": "История и развитие технологии",
-        "goto": "turnstile-history",
-        "always": false
+        "goto": "turnstile-history"
       },
       {
         "id": "turnstile-pros-cons",
         "text": "Преимущества и недостатки",
-        "goto": "turnstile-pros-cons",
-        "always": false
+        "goto": "turnstile-pros-cons"
       },
       {
         "id": "turnstile-usage",
         "text": "Типичные сценарии использования",
-        "goto": "turnstile-usage",
-        "always": false
+        "goto": "turnstile-usage"
       },
       {
         "id": "turnstile-facts",
         "text": "Интересные факты",
-        "goto": "turnstile-facts",
-        "always": false
+        "goto": "turnstile-facts"
       },
       {
         "id": "turnstile-bypass",
         "text": "Гипотетический сценарий обхода системы",
-        "goto": "turnstile-bypass",
-        "always": false
+        "goto": "turnstile-bypass"
       },
       {
         "id": "turnstile-protection",
         "text": "Рекомендации по защите",
-        "goto": "turnstile-protection",
-        "always": false
+        "goto": "turnstile-protection"
       },
       {
         "id": "turnstile-integration",
         "text": "Интеграция с другими системами",
-        "goto": "turnstile-integration",
-        "always": false
+        "goto": "turnstile-integration"
       },
       {
         "id": "back_to_start",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -99,14 +85,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -116,14 +100,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -133,14 +115,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -150,14 +130,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -167,14 +145,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -184,14 +160,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   },
@@ -201,14 +175,12 @@
       {
         "id": "back_to_turnstile",
         "text": "Назад к информации о турникетах",
-        "goto": "turnstile",
-        "always": true
+        "goto": "turnstile"
       },
       {
         "id": "return_main",
         "text": "Вернуться в начало",
-        "goto": "idle",
-        "always": true
+        "goto": "idle"
       }
     ]
   }

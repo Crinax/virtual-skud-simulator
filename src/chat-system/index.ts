@@ -9,7 +9,6 @@ type LoreOption = {
   id: string
   text: string
   goto: string
-  always: boolean
 }
 
 type LoreState = {
@@ -27,7 +26,6 @@ const LORE = lore as Lore
 
 export const useChat = () => {
   const currentState = ref<string>('idle')
-  const usedOptions = ref<Set<string>>(new Set())
   const messages = ref<Message[]>([
     {
       text: LORE[currentState.value].text,
@@ -40,8 +38,6 @@ export const useChat = () => {
     const selectedOption = currentOptions.find(opt => opt.id === optionId)
 
     if (!selectedOption) return
-
-    usedOptions.value.add(optionId)
 
     messages.value.push({
       text: selectedOption.text,
@@ -61,24 +57,15 @@ export const useChat = () => {
     const filteredOptions: Record<string, string> = {}
 
     for (const option of currentOptions) {
-      if (option.id.startsWith('always_') || !usedOptions.value.has(option.id)) {
-        filteredOptions[option.id] = option.text
-      }
+      filteredOptions[option.id] = option.text
     }
 
     return filteredOptions
   })
 
-  const shouldShowOption = (optionId: string) => {
-    const option = LORE[currentState.value].options.find(opt => opt.id === optionId)
-    if (!option) return false
-    return option.always || !usedOptions.value.has(optionId)
-  }
-
   return {
     messages,
     options,
     next,
-    shouldShowOption,
   }
 }

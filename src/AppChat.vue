@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import { useChat } from './chat-system'
-import { ref, onMounted, nextTick, computed } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { marked } from 'marked'
 
-const { messages, options, next, shouldShowOption } = useChat()
+const { messages, options, next } = useChat()
 const displayedText = ref('')
 const isTyping = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
-const filteredOptions = computed(() => {
-  return Object.fromEntries(Object.entries(options.value).filter(([key]) => shouldShowOption(key)))
-})
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -101,7 +98,7 @@ onMounted(() => {
     <div class="app-chat__options">
       <button
         class="app-chat__button"
-        v-for="(option, key) in filteredOptions"
+        v-for="(option, key) in options"
         :key="key"
         @click="handleNext(String(key))"
         :disabled="isTyping"

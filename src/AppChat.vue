@@ -165,6 +165,8 @@ onMounted(() => {
   font-size: 15px;
   line-height: 1.5;
   letter-spacing: 0.2px;
+  white-space: pre-wrap;
+  line-height: 1.3;
 }
 
 .app-chat__message :deep(p) {

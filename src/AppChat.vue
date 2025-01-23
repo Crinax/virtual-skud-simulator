@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { useChat } from './chat-system'
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, computed } from 'vue'
+import { marked } from 'marked'
 
-const { messages, options, next } = useChat()
+const { messages, options, next, shouldShowOption } = useChat()
 const displayedText = ref('')
 const isTyping = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
+const filteredOptions = computed(() => {
+  return Object.fromEntries(Object.entries(options.value).filter(([key]) => shouldShowOption(key)))
+})
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -20,7 +24,7 @@ const typeMessage = async (text: string) => {
 
   for (const char of text) {
     displayedText.value += char
-    await new Promise(resolve => setTimeout(resolve, 30))
+    await new Promise((resolve) => setTimeout(resolve, 30))
     await scrollToBottom()
   }
 
@@ -35,6 +39,10 @@ const handleNext = async (key: string) => {
   await scrollToBottom()
 }
 
+const renderMarkdown = (text: string) => {
+  return marked(text)
+}
+
 onMounted(() => {
   typeMessage(messages.value[0].text)
 })
@@ -43,11 +51,7 @@ onMounted(() => {
 <template>
   <div class="app-chat">
     <div ref="messagesContainer" class="app-chat__messages">
-      <div
-        class="app-chat__message-wrapper"
-        v-for="(message, index) in messages"
-        :key="index"
-      >
+      <div class="app-chat__message-wrapper" v-for="(message, index) in messages" :key="index">
         <svg
           v-if="message.type === 'system'"
           class="app-chat__message-icon"
@@ -77,9 +81,19 @@ onMounted(() => {
             'app-chat__message--system': message.type === 'system',
           }"
         >
-          <template v-if="message.type === 'user'">{{ message.text }}</template>
+          <template v-if="message.type === 'user'">
+            <div v-html="renderMarkdown(message.text)"></div>
+          </template>
           <template v-else>
-            {{ index === messages.length - 1 && message.type === 'system' ? displayedText : message.text }}
+            <div
+              v-html="
+                renderMarkdown(
+                  index === messages.length - 1 && message.type === 'system'
+                    ? displayedText
+                    : message.text,
+                )
+              "
+            ></div>
           </template>
         </div>
       </div>
@@ -87,9 +101,9 @@ onMounted(() => {
     <div class="app-chat__options">
       <button
         class="app-chat__button"
-        v-for="(option, key) in options"
+        v-for="(option, key) in filteredOptions"
         :key="key"
-        @click="handleNext(key as string)"
+        @click="handleNext(String(key))"
         :disabled="isTyping"
       >
         {{ option }}
@@ -103,6 +117,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .app-chat {
@@ -113,7 +129,15 @@ onMounted(() => {
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family:
+    'Lato',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -122,6 +146,7 @@ onMounted(() => {
   flex: 1;
   overflow-y: auto;
   margin-bottom: 20px;
+  padding-right: 8px;
 }
 
 .app-chat__message-wrapper {
@@ -129,6 +154,7 @@ onMounted(() => {
   align-items: flex-start;
   gap: 8px;
   margin-bottom: 16px;
+  padding-right: 8px;
 }
 
 .app-chat__message-icon {
@@ -142,6 +168,16 @@ onMounted(() => {
   font-size: 15px;
   line-height: 1.5;
   letter-spacing: 0.2px;
+}
+
+.app-chat__message :deep(p) {
+  margin: 0;
+}
+
+.app-chat__message :deep(ul),
+.app-chat__message :deep(ol) {
+  margin: 8px 0;
+  padding-left: 20px;
 }
 
 .app-chat__message--system {

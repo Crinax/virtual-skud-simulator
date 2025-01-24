@@ -38,6 +38,16 @@ export const useChat = () => {
       type: 'system',
     },
   ])
+  const answers = computed(() => {
+    return LORE[currentState.value].questions?.flatMap((q) => q.answers).map((a) => a.id) ?? []
+  })
+
+  const isStateTest = (state: string) => {
+    return (
+      (LORE[state] && LORE[state].questions && LORE[state].questions.length > 0) ||
+      (answers.value.includes(state) && answers.value.length > 0)
+    )
+  }
 
   const next = (optionId: string) => {
     const currentOptions = LORE[currentState.value].options
@@ -87,6 +97,7 @@ export const useChat = () => {
     messages,
     options,
     next,
+    isStateTest,
     testQuestions,
   }
 }

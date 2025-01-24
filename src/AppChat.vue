@@ -3,7 +3,7 @@ import { useChat } from './chat-system'
 import { ref, onMounted, nextTick } from 'vue'
 import { marked } from 'marked'
 
-const { messages, options, next, testQuestions } = useChat()
+const { messages, options, next, testQuestions, isStateTest } = useChat()
 const displayedText = ref('')
 const isTyping = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
@@ -34,7 +34,7 @@ const typeMessage = async (text: string) => {
 
 const handleNext = async (key: string) => {
   isResultsView.value = false
-  if (testQuestions.value.length > 0) {
+  if (testQuestions.value.length > 0 && isStateTest(key)) {
     // Обработка теста
     const question = testQuestions.value[currentQuestionIndex.value]
     userAnswers.value.push(key)
@@ -56,7 +56,7 @@ const handleNext = async (key: string) => {
       let markdownTable =
         'Тест завершен. Вот ваши результаты:\n\n| Вопрос | Результат |\n| --- | --- |\n'
       testResults.value.forEach((result) => {
-        const emoji = result.correct ? '✅' : '❌' // Эмодзи для правильного и неправильного ответов
+        const emoji = result.correct ? '✔' : '✖' // Галочка без фона для правильного и неправильного ответов
         markdownTable += `| ${result.question} | ${emoji} |\n`
       })
       typeMessage(markdownTable)

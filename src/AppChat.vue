@@ -3,10 +3,14 @@ import { useChat } from './chat-system'
 import { ref, onMounted, nextTick } from 'vue'
 import { marked } from 'marked'
 
-const { messages, options, next } = useChat()
+const { messages, options, next, testQuestions } = useChat()
 const displayedText = ref('')
 const isTyping = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
+const currentQuestionIndex = ref(0)
+const userAnswers = ref<string[]>([])
+const isResultsView = ref(false)
+const testResults = ref<{ question: string; userAnswer: string; correct: boolean }[]>([])
 
 const scrollToBottom = async () => {
   await nextTick()
@@ -29,15 +33,50 @@ const typeMessage = async (text: string) => {
 }
 
 const handleNext = async (key: string) => {
-  next(key)
-  if (messages.value[messages.value.length - 1].type === 'system') {
-    typeMessage(messages.value[messages.value.length - 1].text)
+  isResultsView.value = false
+  if (testQuestions.value.length > 0) {
+    // Обработка теста
+    const question = testQuestions.value[currentQuestionIndex.value]
+    userAnswers.value.push(key)
+    const isCorrect = question.answers.find((answer) => answer.id === key)?.isCorrect
+
+    testResults.value.push({
+      question: question.question,
+      userAnswer: key,
+      correct: isCorrect ?? false,
+    })
+
+    currentQuestionIndex.value++
+
+    if (currentQuestionIndex.value < testQuestions.value.length) {
+      // Показать следующий вопрос
+      typeMessage(testQuestions.value[currentQuestionIndex.value].question)
+    } else {
+      // Завершить тест и показать результаты
+      let markdownTable = 'Тест завершен. Вот ваши результаты:\n\n| Вопрос | Результат |\n| --- | --- |\n'
+      testResults.value.forEach((result, index) => {
+        markdownTable += `| ${index + 1} | ${result.correct ? 'Правильно' : 'Неправильно'} |\n`
+      })
+      typeMessage(markdownTable)
+      currentQuestionIndex.value = 0
+      userAnswers.value = []
+      isResultsView.value = true
+    }
+  } else {
+    next(key)
+    if (messages.value[messages.value.length - 1].type === 'system') {
+      typeMessage(messages.value[messages.value.length - 1].text)
+    }
+    await scrollToBottom()
   }
-  await scrollToBottom()
 }
 
 const renderMarkdown = (text: string) => {
   return marked(text)
+}
+
+const answerQuestion = (answerId: string) => {
+  handleNext(answerId)
 }
 
 onMounted(() => {
@@ -91,6 +130,26 @@ onMounted(() => {
                 )
               "
             ></div>
+            <div
+              class="app-chat__answer-buttons"
+              v-if="
+                testQuestions.length > 0 &&
+                currentQuestionIndex < testQuestions.length &&
+                message.type === 'system' &&
+                index === messages.length - 1 &&
+                !isResultsView
+              "
+            >
+              <button
+                class="app-chat__transparent-button"
+                v-for="answer in testQuestions[currentQuestionIndex].answers"
+                :key="answer.id"
+                @click="answerQuestion(answer.id)"
+                :disabled="isTyping"
+              >
+                {{ answer.text }}
+              </button>
+            </div>
           </template>
         </div>
       </div>
@@ -101,7 +160,7 @@ onMounted(() => {
         v-for="(option, key) in options"
         :key="key"
         @click="handleNext(String(key))"
-        :disabled="isTyping"
+        :disabled="isTyping || testQuestions.length > 0"
       >
         {{ option }}
       </button>
@@ -165,8 +224,19 @@ onMounted(() => {
   font-size: 15px;
   line-height: 1.5;
   letter-spacing: 0.2px;
-  white-space: pre-wrap;
   line-height: 1.3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app-chat__message div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.app-chat__message--user {
+  white-space: normal;
 }
 
 .app-chat__message :deep(p) {
@@ -199,7 +269,7 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
   margin-right: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-size: 14px;
   font-weight: 500;
   font-family: inherit;
@@ -215,5 +285,30 @@ onMounted(() => {
 .app-chat__button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.app-chat__question-container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.app-chat__answer-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-chat__transparent-button {
+  background: transparent;
+  border: 1px solid #0d4cd3;
+  color: #0d4cd3;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.app-chat__transparent-button:hover {
+  background: rgba(13, 76, 211, 0.1);
 }
 </style>

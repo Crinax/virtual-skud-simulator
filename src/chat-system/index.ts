@@ -14,6 +14,7 @@ type LoreOption = {
 type LoreState = {
   text: string
   options: LoreOption[]
+  questions?: TestQuestion[]
 }
 
 type Lore = {
@@ -23,6 +24,11 @@ type Lore = {
 import lore from './lore.json'
 
 const LORE = lore as Lore
+
+type TestQuestion = {
+  question: string
+  answers: { id: string; text: string; isCorrect: boolean }[]
+}
 
 export const useChat = () => {
   const currentState = ref<string>('idle')
@@ -35,7 +41,7 @@ export const useChat = () => {
 
   const next = (optionId: string) => {
     const currentOptions = LORE[currentState.value].options
-    const selectedOption = currentOptions.find(opt => opt.id === optionId)
+    const selectedOption = currentOptions.find((opt) => opt.id === optionId)
 
     if (!selectedOption) return
 
@@ -49,6 +55,15 @@ export const useChat = () => {
       text: LORE[nextState].text,
       type: 'system',
     })
+
+    if (LORE[nextState].questions) {
+      const firstQuestion = LORE[nextState].questions[0]
+      messages.value.push({
+        text: firstQuestion.question,
+        type: 'system',
+      })
+    }
+
     currentState.value = nextState
   }
 
@@ -63,9 +78,15 @@ export const useChat = () => {
     return filteredOptions
   })
 
+  // Проверяем наличие вопросов в текущем состоянии
+  const testQuestions = computed(() => {
+    return LORE[currentState.value].questions || []
+  })
+
   return {
     messages,
     options,
     next,
+    testQuestions,
   }
 }

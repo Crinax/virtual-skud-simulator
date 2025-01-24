@@ -53,9 +53,11 @@ const handleNext = async (key: string) => {
       typeMessage(testQuestions.value[currentQuestionIndex.value].question)
     } else {
       // Завершить тест и показать результаты
-      let markdownTable = 'Тест завершен. Вот ваши результаты:\n\n| Вопрос | Результат |\n| --- | --- |\n'
-      testResults.value.forEach((result, index) => {
-        markdownTable += `| ${index + 1} | ${result.correct ? 'Правильно' : 'Неправильно'} |\n`
+      let markdownTable =
+        'Тест завершен. Вот ваши результаты:\n\n| Вопрос | Результат |\n| --- | --- |\n'
+      testResults.value.forEach((result) => {
+        const emoji = result.correct ? '✅' : '❌' // Эмодзи для правильного и неправильного ответов
+        markdownTable += `| ${result.question} | ${emoji} |\n`
       })
       typeMessage(markdownTable)
       currentQuestionIndex.value = 0
@@ -160,7 +162,7 @@ onMounted(() => {
         v-for="(option, key) in options"
         :key="key"
         @click="handleNext(String(key))"
-        :disabled="isTyping || testQuestions.length > 0"
+        :disabled="isTyping || testQuestions.length > 0 && !isResultsView"
       >
         {{ option }}
       </button>
@@ -310,5 +312,30 @@ onMounted(() => {
 
 .app-chat__transparent-button:hover {
   background: rgba(13, 76, 211, 0.1);
+}
+
+:deep(table tr td:last-child) {
+  text-align: center;
+  vertical-align: top;
+  border-radius: 4px;
+}
+:deep(table) {
+  border-collapse: collapse;
+}
+
+:deep(tr) {
+  border-bottom: 1px solid #c9c9c9;
+}
+
+:deep(td),
+:deep(th) {
+  border-bottom: 1px solid #c9c9c9;
+}
+
+:deep(td) {
+  padding: 8px;
+}
+:deep(table tr:last-child) {
+  border-bottom: none;
 }
 </style>

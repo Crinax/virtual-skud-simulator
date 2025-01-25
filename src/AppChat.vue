@@ -12,9 +12,18 @@ const userAnswers = ref<string[]>([])
 const isResultsView = ref(false)
 const testResults = ref<{ question: string; userAnswer: string; correct: boolean }[]>([])
 
+const isAtBottom = ref(true)
+
+const checkScrollPosition = () => {
+  if (messagesContainer.value) {
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainer.value
+    isAtBottom.value = scrollHeight - (scrollTop + clientHeight) < 5
+  }
+}
+
 const scrollToBottom = async () => {
   await nextTick()
-  if (messagesContainer.value) {
+  if (messagesContainer.value && isAtBottom.value) {
     messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
   }
 }
@@ -88,7 +97,7 @@ onMounted(() => {
 
 <template>
   <div class="app-chat">
-    <div ref="messagesContainer" class="app-chat__messages">
+    <div ref="messagesContainer" class="app-chat__messages" @scroll="checkScrollPosition">
       <div class="app-chat__message-wrapper" v-for="(message, index) in messages" :key="index">
         <svg
           v-if="message.type === 'system'"

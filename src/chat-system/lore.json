@@ -1528,7 +1528,7 @@
       }
     ]
   },
-  "biometric-system-test": {
+  "biometric-photo-test": {
     "text": "Тест по биометрическим системам:",
     "questions": [
       {
@@ -1740,7 +1740,7 @@
       }
     ]
   },
-  "fingerprint-lock-test": {
+  "intercom-fingerprint-test": {
     "text": "Тест по домофонам с функцией распознавания отпечатков пальцев:",
     "questions": [
       {
@@ -1952,7 +1952,7 @@
       }
     ]
   },
-  "qr-code-access-control-test": {
+  "qr-code-test": {
     "text": "Тест по системе контроля доступа на основе QR-кодов:",
     "questions": [
       {

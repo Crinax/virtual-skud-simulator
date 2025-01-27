@@ -209,8 +209,33 @@ onMounted(() => {
   flex-direction: column;
 }
 
+@media (max-width: 768px) {
+  .app-chat {
+    width: 100dvw;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    border-radius: 0;
+    margin: 0;
+    padding: 16px 16px 32px 16px;
+    position: relative;
+    box-shadow: none;
+    max-width: none;
+  }
+  .app-chat__messages {
+    padding-top: 16px;
+    min-height: 60%;
+    flex-grow: 1;
+  }
+  .app-chat__options {
+    max-height: 30%;
+    margin-top: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+}
+
 .app-chat__messages {
-  flex: 1;
   overflow-y: auto;
   margin-bottom: 20px;
   padding-right: 8px;
@@ -225,7 +250,7 @@ onMounted(() => {
 }
 
 .app-chat__message-icon {
-  margin-top: 8px;
+  flex-shrink: 0;
 }
 
 .app-chat__message {
@@ -281,7 +306,7 @@ onMounted(() => {
   cursor: pointer;
   margin-right: 8px;
   margin-bottom: 4px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   font-family: inherit;
   letter-spacing: 0.3px;

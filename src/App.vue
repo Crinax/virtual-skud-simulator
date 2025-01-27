@@ -10,15 +10,11 @@ import AppChat from './AppChat.vue'
 
 <style scoped>
 main {
-  min-height: 100vh;
+  height: 100dvh;
+  width: 100dvw;
   background-color: #f5f7fa;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-}
-
-.app-chat {
-  width: 70%;
 }
 </style>

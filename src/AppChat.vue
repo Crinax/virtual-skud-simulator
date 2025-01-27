@@ -186,10 +186,11 @@ onMounted(() => {
   gap: 8px;
   max-height: 200px;
   overflow-y: auto;
+  margin-top: auto;
 }
 
 .app-chat {
-  max-width: 600px;
+  width: 600px;
   height: 500px;
   margin: 0 auto;
   background: #fff;
@@ -229,7 +230,6 @@ onMounted(() => {
   }
   .app-chat__options {
     max-height: 30%;
-    margin-top: auto;
     flex-grow: 0;
     flex-shrink: 0;
   }

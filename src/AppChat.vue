@@ -34,7 +34,7 @@ const typeMessage = async (text: string) => {
 
   for (const char of text) {
     displayedText.value += char
-    await new Promise((resolve) => setTimeout(resolve, 30))
+    await new Promise((resolve) => setTimeout(resolve, 15))
     await scrollToBottom()
   }
 
@@ -187,6 +187,7 @@ onMounted(() => {
   max-height: 200px;
   overflow-y: auto;
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .app-chat {
@@ -230,8 +231,6 @@ onMounted(() => {
   }
   .app-chat__options {
     max-height: 30%;
-    flex-grow: 0;
-    flex-shrink: 0;
   }
 }
 
